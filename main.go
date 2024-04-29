@@ -15,11 +15,9 @@ import (
 	
 )
 
-
 var id int //идентификатор в бд
 
 func main() {
-	
 	// подключение к mqtt брокеру Rightech
 	opts := MQTT.NewClientOptions()
 	opts.AddBroker("tcp://dev.rightech.io:1883")
@@ -39,17 +37,12 @@ func main() {
 	}
 }
 
-
-
-// если получены данные от брокера, вызываеися функция для записи их в бд
+// если получены данные от брокера, вызывается функция для записи их в бд
 func onMessageReceived(client MQTT.Client, message MQTT.Message) {
  fmt.Printf("Received message on topic: %s\n", message.Topic())
  fmt.Printf("Message: %s\n", message.Payload())
  to_database(string(message.Payload()))
 }
-
-
-
 
 // инициализация базы данных Firebase Realtime Database
 func InitializeAppWithServiceAccount() *firebase.App {
@@ -66,14 +59,13 @@ func InitializeAppWithServiceAccount() *firebase.App {
 
 // проверка текущего id в базе данных 
 func Check_id() {
-
 	app := InitializeAppWithServiceAccount()
 	client, err := app.Database(context.Background())
 	if err != nil {
 		log.Fatalf("Ошибка при инициализации Realtime Database клиента: %v\n", err)
 	}
-	ref := client.NewRef("id")
 
+	ref := client.NewRef("id")
 	if err := ref.Get(context.Background(), &id); err != nil {
 		log.Fatalln("Error reading value:", err)
 	}
@@ -86,10 +78,9 @@ func Check_id() {
 	// при удалении данных обновлять id на следующий
 }
 
-
-
 // запись в бд
 func to_database(data string) {
+	// разделение данных на номер телефона и номер комплекта
 	data_mas := strings.Split(data, " ")
 	tel, complect_num := data_mas[1], data_mas[0]
 	// Получаем текущую дату и время
@@ -130,8 +121,7 @@ func to_database(data string) {
 		log.Fatalf("Ошибка при записи данных в бд: %v\n", err)
 	}else{
 		fmt.Println("Данные записаны в бд")
-	}
-	
+	}	
 }
 
 
