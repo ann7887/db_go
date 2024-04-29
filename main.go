@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	// "net/http"
-	// "os"
+	"os"
 	"time"
 	"strings"
 	firebase "firebase.google.com/go/v4"
@@ -21,24 +20,23 @@ var id int //идентификатор в бд
 
 func main() {
 	
-	to_database("a b c")
-	// // подключение к mqtt брокеру Rightech
-	// opts := MQTT.NewClientOptions()
-	// opts.AddBroker("tcp://dev.rightech.io:1883")
-	// opts.SetClientID("mqtt_db_go")
+	// подключение к mqtt брокеру Rightech
+	opts := MQTT.NewClientOptions()
+	opts.AddBroker("tcp://dev.rightech.io:1883")
+	opts.SetClientID("mqtt_db_go")
 	   
-	// client := MQTT.NewClient(opts)
-	// if token := client.Connect(); token.Wait() && token.Error() != nil {
-	// 	fmt.Println(token.Error())
-	// 	os.Exit(1)
-	// }
-	// fmt.Println("Connected to Rightech MQTT server") 
-	// // подписываемся на топик  
-	// client.Subscribe("base/state/user", 0, onMessageReceived)
+	client := MQTT.NewClient(opts)
+	if token := client.Connect(); token.Wait() && token.Error() != nil {
+		fmt.Println(token.Error())
+		os.Exit(1)
+	}
+	fmt.Println("Connected to Rightech MQTT server") 
+	// подписываемся на топик  
+	client.Subscribe("base/state/user", 0, onMessageReceived)
 	   
-	// for {
-	// 	time.Sleep(1 * time.Second)
-	// }
+	for {
+		time.Sleep(1 * time.Second)
+	}
 }
 
 
@@ -112,25 +110,22 @@ func to_database(data string) {
 	if err != nil {
 		log.Fatalf("Ошибка при инициализации Realtime Database клиента: %v\n", err)
 	}
-
-	// проверка id по которому записываем
-	Check_id()
-	log.Println(id)
-	ref := client.NewRef(strconv.Itoa(id))
 	
+	// мапа с данными для записи
 	datalist := map[string]interface{}{
 		"telephone": tel,
 		"complect_num":  complect_num,
 		"date":date,
 	}
-	// if err := ref.Get(context.Background(), &datalist); err != nil {
-	// 	return
-	// }
 	fmt.Printf("%v", datalist["telephone"])
 	fmt.Printf("%v", datalist["complect_num"])
 	fmt.Printf("%v", datalist["date"])
 
-	
+	// проверка id по которому записываем
+	Check_id()
+	log.Println(id)
+	// запись в бд
+	ref := client.NewRef(strconv.Itoa(id))
 	if err := ref.Set(context.Background(), datalist); err != nil {
 		log.Fatalf("Ошибка при записи данных в бд: %v\n", err)
 	}else{
