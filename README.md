@@ -7,7 +7,7 @@ Firebase Console -> Project settings -> Service accounts -> Generate new private
 (´·‿·`)
 
 
-_________________________________________________________
+*************************
 To initialize the database, you need to add your key file:
 
 Firebase Console -> Project settings -> Service accounts -> Generate new private key - download json file
