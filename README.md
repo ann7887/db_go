@@ -1,6 +1,6 @@
 # db_go
 
-Добавьте свой файл с ключами:
+Добавьте свой файл с ключами и укажите его в opt := option.WithCredentialsFile("название вашего файла"):
 
 Firebase Console -> Project settings -> Service accounts -> Generate new private key
 
@@ -8,6 +8,6 @@ Firebase Console -> Project settings -> Service accounts -> Generate new private
 
 
 *************************
-To initialize the database, you need to add your key file:
+To initialize the database, you need to add your key file to opt := option.WithCredentialsFile("your file")::
 
 Firebase Console -> Project settings -> Service accounts -> Generate new private key - download json file
