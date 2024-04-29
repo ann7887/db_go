@@ -1,6 +1,6 @@
 # db_go
 
-Добавьте файл с ключами:
+Добавьте свой файл с ключами:
 
 Firebase Console -> Project settings -> Service accounts -> Generate new private key
 
