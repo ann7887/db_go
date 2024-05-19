@@ -1,6 +1,6 @@
 # db_go
 
-Добавьте свой файл с ключами и укажите его в opt := option.WithCredentialsFile("название вашего файла"):
+Добавьте свой json файл с ключами из Google Firebase Console и укажите его в opt := option.WithCredentialsFile("название вашего файла"):
 
 Firebase Console -> Project settings -> Service accounts -> Generate new private key
 
